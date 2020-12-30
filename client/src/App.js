@@ -1,9 +1,9 @@
-import React,{useEffect} from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container, AppBar, Typography, Grow, Grid } from "@material-ui/core";
-import {useDispatch} from 'react-redux';
+import { useDispatch } from 'react-redux';
 
-import {getPosts} from './actions/posts' 
-    
+import { getPosts } from './actions/posts'
+
 import memories from "./images/memories.png"
 import Posts from './components/Posts/Posts';
 import Form from './components/Form/Form';
@@ -11,27 +11,28 @@ import Form from './components/Form/Form';
 import useStyles from './styles';
 
 function App() {
+    const [currentId, setCurrentId] = useState(null);
     const classes = useStyles();
     const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(getPosts());
-    }, [dispatch]);
+    }, [currentId,dispatch]);
     return (
         <Container maxWidth="lg">
             <AppBar className={classes.AppBar} position="static" color="inherit">
-                <Typography  className={classes.heading}  variant="h2" align="center">Memories   </Typography >
-                <img  className={classes.image} src={memories} alt="memories" height="60" />
+                <Typography className={classes.heading} variant="h2" align="center">Memories   </Typography >
+                <img className={classes.image} src={memories} alt="memories" height="60" />
             </AppBar>
             <Grow in >
                 <Container>
-                    <Grid container justify="space-between" alignItems="stretch" spacing={3}>
+                    <Grid container className={classes.mainContainer} justify="space-between" alignItems="stretch" spacing={3}>
 
                         <Grid item xs={12} sm={7}>
-<Posts/>
+                            <Posts setCurrentId={ setCurrentId} />
                         </Grid>
                         <Grid item xs={12} sm={4}>
-<Form/>
+                            <Form currentId={currentId} setCurrentId={ setCurrentId}/>
                         </Grid>
                     </Grid>
                 </Container>
